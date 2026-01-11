@@ -1,34 +1,23 @@
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { RiGeminiFill } from "react-icons/ri";
-import { toast } from "sonner";
-import { useNavigate } from "@tanstack/react-router";
 import { useCaptureManager } from "../../hooks/useCaptureManager";
 
 interface AIbuttonProps {
   generateCaptureSummary: (captureId: string) => void;
-  hasApiKey: boolean;
   loadingSummary: boolean;
   handleOpenChat: () => void;
 }
 
 export const AIbuttons: React.FC<AIbuttonProps> = ({
   generateCaptureSummary,
-  hasApiKey,
   loadingSummary,
   handleOpenChat,
 }) => {
   const { selectedCapture } = useCaptureManager("all");
-  const navigate = useNavigate();
 
   const handleGenerateSummary = () => {
-    if (hasApiKey) {
-      generateCaptureSummary?.(selectedCapture?._id || "");
-    } else {
-      toast.error("Please add an API key to generate summaries.");
-      navigate({ to: "/profile" });
-      return;
-    }
+    generateCaptureSummary?.(selectedCapture?._id || "");
   };
 
   return (

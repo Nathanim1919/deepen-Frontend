@@ -12,15 +12,12 @@ import {
   FiChevronRight,
   FiFileText,
 } from "react-icons/fi";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { RiGeminiFill } from "react-icons/ri";
-import { doesUserHasApiKey } from "../utils/profile.util";
-import { useEffect, useState } from "react";
 import { NoteSummarySkeleton } from "./skeleton/NoteSummarySkeleton";
 import React from "react";
 import HeadingOutline from "./HeadingOutline";
 import { AIbuttons } from "./buttons/AIbutton";
-import { toast } from "sonner";
 import type { UIStore } from "../stores/types";
 import { useCaptureDetail } from "../hooks/useCaptureManager";
 import { useFolderManager } from "../hooks/useFolderManager";
@@ -50,29 +47,12 @@ const NoteView: React.FC<NoteViewProps> = ({ capture }) => {
     capture: selectedCapture, // For summary display
   } = useCaptureDetail(capture._id);
 
-  const [hasApiKey, setHasApiKey] = useState<boolean>(false);
-
   const { setSelectedFolder } = useFolderManager();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkApiKey = async () => {
-      const result = await doesUserHasApiKey();
-      setHasApiKey(result);
-    };
-    checkApiKey();
-  }, []);
 
   const handleOpenChat = () => {
-    if (!hasApiKey) {
-      toast.error("Please add an API key to use AI features.");
-      navigate({ to: "/profile" });
-      return;
-    } else {
-      setOpenAiChat(!openAiChat);
-      setMiddlePanelCollapsed(true);
-      setCollapsed(true);
-    }
+    setOpenAiChat(!openAiChat);
+    setMiddlePanelCollapsed(true);
+    setCollapsed(true);
   };
 
   const containerWidth = openAiChat
@@ -227,7 +207,6 @@ const NoteView: React.FC<NoteViewProps> = ({ capture }) => {
 
             <AIbuttons
               generateCaptureSummary={generateSummary}
-              hasApiKey={hasApiKey}
               loadingSummary={loadingSummary}
               handleOpenChat={handleOpenChat}
             />

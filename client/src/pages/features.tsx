@@ -98,7 +98,7 @@ export const Features: React.FC = () => {
                 </motion.div>
 
                 <div>
-                  <h2 className="text-xl font-medium text-white mb-4 tracking-tight">
+                  <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-4 tracking-tight">
                     {section.heading}
                   </h2>
 
@@ -110,7 +110,7 @@ export const Features: React.FC = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.1 + index * 0.1 }}
                         viewport={{ once: true }}
-                        className="text-base text-blue-100/80 leading-relaxed"
+                        className="text-base text-gray-600 dark:text-blue-100/80 leading-relaxed"
                       >
                         {p}
                       </motion.p>
@@ -121,7 +121,7 @@ export const Features: React.FC = () => {
 
               {index < manifestoContent.length - 1 && (
                 <motion.div
-                  className="mt-12 h-px w-full bg-gradient-to-r from-transparent via-blue-500/20 to-transparent"
+                  className="mt-12 h-px w-full bg-gradient-to-r from-transparent via-gray-200 dark:via-blue-500/20 to-transparent"
                   initial={{ scaleX: 0 }}
                   whileInView={{ scaleX: 1 }}
                   transition={{ delay: 0.3 + index * 0.2 }}
@@ -144,12 +144,12 @@ export const Features: React.FC = () => {
             onClick={() => window.location.href = "/waitlist"}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm font-medium transition-colors shadow-lg hover:shadow-blue-500/20"
+            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-md text-sm font-medium transition-colors shadow-lg hover:shadow-blue-500/20"
           >
             Join Waitlist
           </motion.button>
-          <p className="mt-4 text-xs text-blue-400/60 tracking-wider">
-            Deepen.live • Coming 2025
+          <p className="mt-4 text-xs text-gray-500 dark:text-blue-400/60 tracking-wider">
+            Deepen.live • Coming 2026
           </p>
         </motion.div>
       </div>

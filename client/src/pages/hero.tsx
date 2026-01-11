@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Image from "../assets/img1.png";
+import LightImage from "../assets/img2.png";
 import { CallToAction } from "./CallToAction";
 import { Features } from "./features";
 import { TestimonialsPage } from "./TestimonialsPage";
@@ -65,11 +66,17 @@ const HeroPage = () => {
                 {/* Subtle glow effect */}
                 <div className="absolute -inset-4 bg-blue-500/10 dark:bg-violet-500/10 rounded-3xl blur-xl -z-10" />
 
-                {/* Product image with refined border */}
+                {/* Product image - Light mode */}
+                <img
+                  src={LightImage}
+                  alt="App interface"
+                  className="w-full h-auto rounded-2xl border border-gray-200 shadow-2xl dark:hidden"
+                />
+                {/* Product image - Dark mode */}
                 <img
                   src={Image}
                   alt="App interface"
-                  className="w-full h-auto rounded-2xl border border-gray-200 dark:border-white/10 shadow-2xl"
+                  className="w-full h-auto rounded-2xl border border-white/10 shadow-2xl hidden dark:block"
                 />
               </div>
             </motion.div>

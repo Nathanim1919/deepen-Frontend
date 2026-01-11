@@ -6,18 +6,18 @@ import { motion } from "framer-motion";
 export const CallToAction = () => {
   return (
     <motion.section 
-      className="relative overflow-hidden -mt-12 md:mt-0 md:py-8 px-6 bg-[#000000]"
+      className="relative overflow-hidden -mt-12 md:mt-0 md:py-8 px-6 bg-white dark:bg-[#000000]"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: "-100px" }}
     >
       {/* Apple-style subtle noise texture */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjAyIiBudW1PY3RhdmVzPSI1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvc3ZnPg==')] opacity-[0.02] pointer-events-none" />
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjAyIiBudW1PY3RhdmVzPSI1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvc3ZnPg==')] opacity-[0.05] dark:opacity-[0.02] pointer-events-none" />
       
       {/* Precise gradient elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-[20%] left-[15%] w-[400px] h-[400px] bg-gradient-to-br from-violet-900/5 to-transparent rounded-full blur-[120px]" />
-        <div className="absolute bottom-[25%] right-[20%] w-[300px] h-[300px] bg-indigo-900/5 rounded-full blur-[100px]" />
+        <div className="absolute top-[20%] left-[15%] w-[400px] h-[400px] bg-gradient-to-br from-blue-200/40 dark:from-violet-900/5 to-transparent rounded-full blur-[120px]" />
+        <div className="absolute bottom-[25%] right-[20%] w-[300px] h-[300px] bg-indigo-200/40 dark:bg-indigo-900/5 rounded-full blur-[100px]" />
       </div>
 
       <div className="max-w-4xl mx-auto text-center relative">
@@ -35,21 +35,14 @@ export const CallToAction = () => {
           viewport={{ once: true }}
         >
           <span 
-           style={{
-            backgroundImage:
-              "linear-gradient(90deg, #06d1ff, #efff12, #ffffff)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            color: "transparent",
-          }}
-          className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
+           className="bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-blue-600 to-gray-900 dark:from-white dark:via-[#efff12] dark:to-white/80">
             Capture ideas.<br />like never before.
           </span>
         </motion.h2>
 
         {/* Subtext with perfect line height */}
         <motion.p 
-          className="text-xl  text-white/60 mb-10 max-w-lg mx-auto leading-[1.6]"
+          className="text-xl text-gray-600 dark:text-white/60 mb-10 max-w-lg mx-auto leading-[1.6]"
           initial={{ y: 10, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ 
@@ -86,7 +79,6 @@ export const CallToAction = () => {
               <FiArrowUpRight className="ml-1 text-gray-500 group-hover:text-gray-700 transition-colors" />
             </Link>
           </motion.div>
-
           <motion.div 
             whileHover={{ scale: 1.03 }} 
             whileTap={{ scale: 0.98 }}
@@ -105,14 +97,14 @@ export const CallToAction = () => {
           onClick={() => window.location.href = "/waitlist"}
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
-                          className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm font-medium transition-colors shadow-lg hover:shadow-blue-500/20"
+                          className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-md text-sm font-medium transition-colors shadow-lg hover:shadow-blue-500/20"
                         >
                           Join Waitlist
                         </motion.button>
 
         {/* Microcopy with perfect tracking */}
         <motion.p 
-          className="mt-8 text-sm text-white/40 tracking-wide"
+          className="mt-8 text-sm text-gray-500 dark:text-white/40 tracking-wide"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.4 }}

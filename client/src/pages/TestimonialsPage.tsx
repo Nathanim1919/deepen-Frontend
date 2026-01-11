@@ -28,15 +28,15 @@ export const TestimonialsPage = () => {
   ];
 
   return (
-    <section className="min-h-screen text-white p-6">
+    <section className="min-h-screen text-gray-900 dark:text-white p-6 bg-white dark:bg-black">
       <div className="max-w-6xl mx-auto">
         {/* Header with Material Design typography */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-normal tracking-tight text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-normal tracking-tight text-gray-900 dark:text-white mb-4">
             What People Are Saying
           </h2>
-          <div className="w-24 h-1 bg-violet-400 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-400 font-light max-w-2xl mx-auto">
+          <div className="w-24 h-1 bg-blue-500 dark:bg-violet-400 mx-auto mb-6"></div>
+          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto">
             Feedback from real minds using Deepen
           </p>
         </div>
@@ -46,15 +46,15 @@ export const TestimonialsPage = () => {
           {testimonials.map((t, idx) => (
             <div 
               key={idx}
-              className={`rounded-xl p-6 transition-all duration-300 `}
+              className={`rounded-xl p-6 transition-all duration-300 border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-transparent`}
             >
-              <div className={`text-5xl mb-4 ${t.highlight ? "text-violet-300" : "text-gray-500"}`}>
+              <div className={`text-5xl mb-4 ${t.highlight ? "text-blue-500 dark:text-violet-300" : "text-gray-300 dark:text-gray-500"}`}>
                 "
               </div>
-              <p className="text-lg text-gray-100 mb-6">
+              <p className="text-lg text-gray-800 dark:text-gray-100 mb-6 font-light leading-relaxed">
                 {t.quote}
               </p>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
                 — {t.author}
               </p>
             </div>
@@ -62,9 +62,9 @@ export const TestimonialsPage = () => {
         </div>
 
         {/* Material Design footer */}
-        <div className="mt-20 pt-8 border-t border-gray-700 text-center">
+        <div className="mt-20 pt-8 border-t border-gray-200 dark:border-gray-700 text-center">
           <p className="text-gray-500 text-sm">
-            Want to share your experience? <span className="text-violet-400 hover:text-violet-300 cursor-pointer">Leave feedback</span>
+            Want to share your experience? <span className="text-blue-600 dark:text-violet-400 hover:text-blue-500 dark:hover:text-violet-300 cursor-pointer transition-colors">Leave feedback</span>
           </p>
         </div>
       </div>

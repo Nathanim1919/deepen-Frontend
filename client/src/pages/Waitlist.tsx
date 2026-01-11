@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { api } from "../api";
 import { toast } from "sonner";
+import { ArrowRight, Check, Loader2, MoveLeft } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 const Waitlist = () => {
   const [email, setEmail] = useState("");
@@ -31,182 +33,129 @@ const Waitlist = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100 overflow-hidden relative">
-      {/* Subtle texture background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(125,125,125,0.05)_0%,transparent_70%)]">
-        <div className="absolute inset-0 opacity-10 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_70%)]">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48cGF0aCBkPSJNMCAwaDYwdjYwSDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTMwIDMwTTIwIDMwYTAgMTAgMTAgMSAwIDIwIDBhMCAxMCAxMCAxIDAgLTIwIDBaIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMC4yIiBzdHJva2UtZGFzaGFycmF5PSIxLDEiLz48L3N2Zz4=')]" />
-        </div>
+    <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-gray-100 relative overflow-hidden flex flex-col justify-center">
+      {/* Back Button */}
+      <div className="absolute top-6 left-6 z-20">
+        <Link 
+          to="/"
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 transition-all text-sm font-medium text-gray-600 dark:text-gray-300"
+        >
+          <MoveLeft className="w-4 h-4" />
+          <span>Back to Home</span>
+        </Link>
       </div>
 
-      {/* Ambient lighting */}
-      <div className="fixed -left-1/4 -top-1/4 w-[50%] h-[50%] rounded-full bg-violet-900/5 blur-[100px]" />
-      <div className="fixed -right-1/4 -bottom-1/4 w-[50%] h-[50%] rounded-full bg-indigo-900/5 blur-[100px]" />
+      {/* Refined Background Gradients */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100/40 dark:bg-blue-900/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-100/40 dark:bg-violet-900/10 rounded-full blur-[120px]" />
+      </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-5 py-24 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">
+      <div className="relative z-10 w-full max-w-lg mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-md mx-auto text-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-12"
         >
-          {/* Brand mark - subtle yet distinctive */}
-          <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-16"
-          >
-            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/10">
-              <svg
-                viewBox="0 0 24 24"
-                className="w-8 h-8 text-white"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <motion.path
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 1, delay: 0.2 }}
-                  d="M12 2L3 12L12 22L21 12L12 2Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <motion.path
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  d="M12 22L12 12"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <h1 className="text-4xl font-light tracking-tight text-gray-50">
-              Deepen
-            </h1>
-          </motion.div>
+          {/* Logo Mark */}
+          <div className="w-12 h-12 mx-auto mb-8 bg-black dark:bg-white rounded-xl flex items-center justify-center shadow-xl shadow-black/5 dark:shadow-white/5">
+            <svg
+              viewBox="0 0 24 24"
+              className="w-6 h-6 text-white dark:text-black"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="mb-12"
-          >
-            <h2 className="text-3xl font-medium tracking-tight text-gray-50 mb-4">
-              The next dimension of{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-300 to-indigo-300">
-                AI understanding
-              </span>
-            </h2>
-            <p className="text-gray-400/90 leading-relaxed">
-              Join our waitlist to be among the first to experience contextual
-              intelligence that truly comprehends.
-            </p>
-          </motion.div>
+          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 dark:text-white mb-4">
+            Join the movement.
+          </h1>
+          <p className="text-lg text-gray-500 dark:text-gray-400 leading-relaxed">
+            Experience the future of knowledge management. <br className="hidden sm:block"/>
+            Be the first to know when we launch.
+          </p>
+        </motion.div>
 
-          <AnimatePresence mode="wait">
-            {!submitted ? (
-              <motion.form
-                key="form"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
-                onSubmit={handleSubmit}
-                className="flex flex-col gap-4 w-full"
-              >
-                <div className="relative">
+        <AnimatePresence mode="wait">
+          {!submitted ? (
+            <motion.form
+              key="form"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ delay: 0.1 }}
+              onSubmit={handleSubmit}
+              className="relative w-full"
+            >
+              <div className="group relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl opacity-20 group-hover:opacity-40 transition duration-500 blur-sm" />
+                <div className="relative flex items-center bg-white dark:bg-zinc-900 rounded-xl p-1.5 shadow-sm border border-gray-200 dark:border-white/10 ring-1 ring-gray-900/5">
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
+                    placeholder="name@company.com"
                     required
-                    className="w-full px-5 py-4 bg-gray-900/70 backdrop-blur-sm border border-gray-800 rounded-lg focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/10 outline-none transition-all duration-300 placeholder:text-gray-500 text-gray-200 text-center"
+                    className="flex-1 bg-transparent border-none text-gray-900 dark:text-white placeholder-gray-400 px-4 py-3 focus:outline-none focus:ring-0 text-base"
                   />
-                  <div className="absolute inset-0 rounded-lg pointer-events-none border border-white/5 mix-blend-overlay" />
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="bg-black dark:bg-white text-white dark:text-black px-5 py-3 rounded-lg font-medium text-sm hover:opacity-90 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2 min-w-[100px] justify-center"
+                  >
+                    {isLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        Join <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
                 </div>
+              </div>
+              <p className="mt-4 text-center text-xs text-gray-400 dark:text-gray-500">
+                No spam. Unsubscribe anytime.
+              </p>
+            </motion.form>
+          ) : (
+            <motion.div
+              key="success"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="w-full bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-900/30 rounded-2xl p-8 text-center"
+            >
+              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Check className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">
+                You're on the list!
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                We'll notify you as soon as early access opens.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-                <motion.button
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  type="submit"
-                  disabled={isLoading}
-                  className="px-6 py-4 rounded-lg font-medium bg-gray-50 text-gray-900 transition-all duration-300 hover:bg-white disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                >
-                  {isLoading ? (
-                    <>
-                      <motion.span
-                        animate={{ rotate: 360 }}
-                        transition={{
-                          duration: 1,
-                          repeat: Infinity,
-                          ease: "linear",
-                        }}
-                        className="block w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full"
-                      />
-                      <span>Securing your spot</span>
-                    </>
-                  ) : (
-                    "Join the waitlist"
-                  )}
-                </motion.button>
-              </motion.form>
-            ) : (
-              <motion.div
-                key="success"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="p-6 bg-gray-900/70 backdrop-blur-sm border border-gray-800 rounded-lg"
-              >
-                <motion.div
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="flex flex-col items-center"
-                >
-                  <div className="w-14 h-14 rounded-full bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mb-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-violet-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-medium text-gray-50 mb-2">
-                    Welcome aboard
-                  </h3>
-                  <p className="text-gray-400 text-center">
-                    We've saved your spot. You'll hear from us soon.
-                  </p>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="mt-24 text-xs text-gray-500 flex flex-col items-center gap-1"
-          >
-            <span>© {new Date().getFullYear()} Deepen AI</span>
-            <span className="opacity-50">Contextual intelligence redefined</span>
-          </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-16 flex justify-center gap-8"
+        >
+          {/* Social Proof / Stats placeholder could go here for credibility */}
         </motion.div>
+      </div>
+      
+      {/* Bottom Legal */}
+      <div className="absolute bottom-8 left-0 right-0 text-center">
+        <p className="text-xs text-gray-400 dark:text-zinc-600">
+          © {new Date().getFullYear()} Deepen. All rights reserved.
+        </p>
       </div>
     </div>
   );

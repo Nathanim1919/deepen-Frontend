@@ -4,152 +4,149 @@ import {
   ChevronDown,
   BrainCircuit,
   Lock,
-  Cpu,
-  Smartphone,
-  Users,
-  FileStack,
-  RefreshCw,
+  Zap,
+  Globe,
+  MessageSquare,
+  Search,
+  Plus
 } from "lucide-react";
 
 export const FAQ = () => {
   const faqs = [
     {
-      icon: <BrainCircuit className="w-5 h-5 text-purple-400" />,
-      question: "How does Deepen differ from traditional knowledge tools?",
+      icon: <Globe className="w-5 h-5" />,
+      question: "What exactly does Deepen capture?",
       answer:
-        "Deepen forges neural-like links between ideas. Our AI surfaces context-aware insights with end-to-end encrypted sync—seamlessly across devices.",
+        "Everything. Articles, PDFs, YouTube videos, tweets, and even your own notes. If it has a URL or text, Deepen can ingest it, process it, and make it part of your searchable knowledge base."
     },
     {
-      icon: <Lock className="w-5 h-5 text-purple-400" />,
-      question: "What makes your privacy approach special?",
+      icon: <BrainCircuit className="w-5 h-5" />,
+      question: "Is this just another bookmark manager?",
       answer:
-        "Zero-knowledge architecture encrypts your data before it leaves your device. We never hold decryption keys. Not even we can access it.",
+        "No. Bookmarks are static links you forget. Deepen is an active intelligence layer. It reads what you save, understands the context, and uses vector search to resurface relevant information exactly when you need it."
     },
     {
-      icon: <Cpu className="w-5 h-5 text-purple-400" />,
-      question: "How does the AI work privately?",
+      icon: <MessageSquare className="w-5 h-5" />,
+      question: "How does the 'Brain Chat' work?",
       answer:
-        "We prioritize on-device intelligence. When cloud-based tasks are needed, we leverage encrypted computation using homomorphic encryption.",
+        "Unlike generic AI like ChatGPT, Deepen's chat is grounded in *your* data. You can ask, 'What did I read about cognitive load last month?' and it will synthesize an answer citing your specific saved articles and notes."
     },
     {
-      icon: <Smartphone className="w-5 h-5 text-purple-400" />,
-      question: "Is offline use supported?",
+      icon: <Search className="w-5 h-5" />,
+      question: "Can it find things by meaning, not just keywords?",
       answer:
-        "Yes. Deepen is fully operational offline. All changes sync once reconnected via CRDTs for conflict-free merging.",
+        "Yes. We use advanced vector embeddings (Qdrant) to understand semantic relationships. Searching for 'startup growth' will find articles about 'scaling', 'product-market fit', and 'venture capital' even if those exact words aren't used."
     },
     {
-      icon: <Users className="w-5 h-5 text-purple-400" />,
-      question: "How does team collaboration work?",
+      icon: <Zap className="w-5 h-5" />,
+      question: "Do I need to manually organize everything?",
       answer:
-        "Live collaboration with granular access, presence indicators, and encrypted syncing—designed for creative minds working in flow.",
+        "Only if you want to. Deepen automatically categorizes content, generates summaries, and suggests tags. You can create Collections for specific projects, but the AI makes retrieval effortless regardless of organization."
     },
     {
-      icon: <FileStack className="w-5 h-5 text-purple-400" />,
-      question: "What file types are supported?",
+      icon: <Lock className="w-5 h-5" />,
+      question: "Is my data used to train public AI models?",
       answer:
-        "Over 200 formats: from docs to 3D files—all integrated with your knowledge graph and searchable contextually.",
-    },
-    {
-      icon: <RefreshCw className="w-5 h-5 text-purple-400" />,
-      question: "Update frequency?",
-      answer:
-        "Biweekly releases—seamless, invisible updates that just work. No migrations, no friction, just progress.",
-    },
+        "Absolutely not. Your personal knowledge graph is yours alone. We use secure, enterprise-grade LLM APIs (like OpenRouter) with strict privacy controls. We do not sell your data or use it to train foundation models."
+    }
   ];
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const toggle = (i: number) => setActiveIndex(activeIndex === i ? null : i);
 
   return (
-    <section className="relative bg-[#0c0c0c] text-white py-28 px-6 sm:px-12 overflow-hidden">
-      {/* Soft radial gradients */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/3 left-[10%] w-80 h-80 bg-purple-800/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-[5%] w-96 h-96 bg-purple-600/10 rounded-full blur-[120px]" />
+    <section className="relative bg-white dark:bg-black text-gray-900 dark:text-white py-32 px-6 sm:px-12 overflow-hidden transition-colors duration-300">
+      
+      {/* Ambient Background - Clean & Subtle */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-gray-100/50 dark:bg-zinc-900/30 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[10%] left-[-10%] w-[500px] h-[500px] bg-gray-50/50 dark:bg-zinc-900/20 rounded-full blur-[100px]" />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
-        <motion.h2
+      <div className="relative z-10 max-w-3xl mx-auto">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-4xl md:text-5xl font-light text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-purple-400 to-purple-500 mb-6"
+          className="text-center mb-24"
         >
-          Frequently Asked Questions
-        </motion.h2>
-        <p className="text-lg text-gray-400 max-w-xl mx-auto font-light">
-          Answers for curious minds, crafted with clarity.
-        </p>
-      </div>
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 dark:text-white mb-6">
+            Common Questions
+          </h2>
+          <p className="text-xl text-gray-500 dark:text-gray-400 font-light max-w-xl mx-auto leading-relaxed">
+            Everything you need to know about building your second brain.
+          </p>
+        </motion.div>
 
-      {/* FAQ Blocks */}
-      <div className="relative z-10 mt-16 space-y-3 max-w-3xl mx-auto">
-        {faqs.map((faq, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: i * 0.05 }}
-            className="rounded-2xl border border-zinc-800 bg-zinc-900/40 backdrop-blur-sm hover:border-zinc-700 transition"
-          >
-            <button
-              onClick={() => toggle(i)}
-              className="w-full px-6 py-5 flex items-center justify-between text-left gap-4"
+        {/* FAQ List - Clean Editorial Style */}
+        <div className="space-y-4">
+          {faqs.map((faq, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+              className="group border-b border-gray-100 dark:border-zinc-900 last:border-0"
             >
-              <div className="flex items-center gap-4">
-                <div className="p-2 bg-purple-500/10 rounded-lg border border-purple-500/20">
-                  {faq.icon}
-                </div>
-                <span className="text-md md:text-lg text-white font-medium">
-                  {faq.question}
-                </span>
-              </div>
-              <motion.div
-                animate={{ rotate: activeIndex === i ? 180 : 0 }}
-                transition={{ type: "spring", stiffness: 200 }}
+              <button
+                onClick={() => toggle(i)}
+                className="w-full py-6 flex items-start justify-between text-left gap-6 group-hover:bg-gray-50/50 dark:group-hover:bg-zinc-900/30 transition-colors rounded-xl px-4 -mx-4"
               >
-                <ChevronDown className="w-4 h-4 text-gray-400" />
-              </motion.div>
-            </button>
+                <div className="flex gap-5">
+                  <div className={`mt-1 transition-colors duration-300 ${activeIndex === i ? 'text-blue-600 dark:text-white' : 'text-gray-400 dark:text-zinc-600 group-hover:text-gray-600 dark:group-hover:text-zinc-400'}`}>
+                    {faq.icon}
+                  </div>
+                  <span className={`text-lg md:text-xl font-medium transition-colors duration-200 ${activeIndex === i ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-zinc-400 group-hover:text-gray-900 dark:group-hover:text-gray-200'}`}>
+                    {faq.question}
+                  </span>
+                </div>
+                <div className={`mt-1.5 transition-transform duration-300 ${activeIndex === i ? 'rotate-45' : ''}`}>
+                  <Plus className={`w-5 h-5 ${activeIndex === i ? 'text-blue-600 dark:text-white' : 'text-gray-300 dark:text-zinc-600'}`} />
+                </div>
+              </button>
 
-            <AnimatePresence>
-              {activeIndex === i && (
-                <motion.div
-                  key="answer"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{
-                    opacity: 1,
-                    height: "auto",
-                    transition: {
-                      type: "spring",
-                      damping: 20,
-                      stiffness: 200,
-                    },
-                  }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="px-6 pb-6 -mt-2 text-sm md:text-base text-gray-400 leading-relaxed font-light"
-                >
-                  {faq.answer}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        ))}
+              <AnimatePresence>
+                {activeIndex === i && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{
+                      opacity: 1,
+                      height: "auto",
+                      transition: {
+                        type: "spring",
+                        damping: 25,
+                        stiffness: 200,
+                      },
+                    }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pl-[3.25rem] pr-4 pb-8 text-base md:text-lg text-gray-500 dark:text-gray-400 leading-relaxed font-normal max-w-2xl">
+                      {faq.answer}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Minimal CTA */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+          className="mt-24 text-center"
+        >
+          <p className="text-gray-500 dark:text-zinc-500 mb-4">Still wondering?</p>
+          <a href="#" className="inline-flex items-center text-gray-900 dark:text-white font-medium border-b border-gray-200 dark:border-zinc-800 pb-0.5 hover:border-gray-900 dark:hover:border-white transition-colors">
+            Contact Support
+          </a>
+        </motion.div>
       </div>
-
-      {/* CTA */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
-        className="mt-24 text-center text-sm text-gray-500"
-      >
-        Still have questions?{" "}
-        <span className="text-purple-400 underline cursor-pointer hover:text-purple-300 transition">
-          Talk to us →
-        </span>
-      </motion.div>
     </section>
   );
 };
