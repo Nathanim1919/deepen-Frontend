@@ -1,12 +1,13 @@
-import { Bookmark, Bot, Brain, FolderPlus, Plus, Send, Zap } from "lucide-react";
+import { Bookmark, Bot, Brain, FolderPlus, Plus, ArrowUp, Zap, Command, Paperclip } from "lucide-react";
 import type { UIStore } from "../../stores/types";
 import { useStore } from "../../context/StoreContext";
 import { useNavigate } from "@tanstack/react-router";
 import { useBrainStore } from "../../stores/brain-store";
 import { useSettingsStore, AUTO_MODEL_ID } from "../../stores/settings-store";
 import { ContextSummaryBar } from "./ContextSummaryBar";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const EmptyChatView = () => {
     const navigate = useNavigate();
@@ -14,8 +15,10 @@ export const EmptyChatView = () => {
     const { toggleBookmark, toggleBrain, isBrainActive, isBookmarkActive, selectedModel, startConversation } = useBrainStore();
     const { defaultModelId } = useSettingsStore();
     const [message, setMessage] = useState("");
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [isFocused, setIsFocused] = useState(false);
 
-    // Get display name for the current model (selected or default)
+    // Get display name for the current model
     const getModelDisplayName = () => {
         if (selectedModel?.name) {
             return selectedModel.name.length > 20 
@@ -32,16 +35,20 @@ export const EmptyChatView = () => {
 
     const isAutoMode = !selectedModel && defaultModelId === AUTO_MODEL_ID;
 
+    // Auto-resize textarea
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = "auto";
+            textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`;
+        }
+    }, [message]);
+
     const handleSendMessage = async () => {
         if (!message.trim()) return;
 
-        // Generate temp ID and navigate immediately for better UX
         const tempId = `temp-${Date.now()}`;
-
-        // Navigate immediately with temp ID
         navigate({ to: `/in/brain/${tempId}` });
 
-        // Start conversation creation in background with tempId
         try {
             await startConversation(message, tempId);
         } catch (error) {
@@ -51,103 +58,168 @@ export const EmptyChatView = () => {
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    };
 
     return (
-        <div className="h-full w-full bg-[#f4f0f0] dark:bg-[#111112]">
-            <div className="flex flex-col relative h-full w-full items-center justify-center">
-                <div className="flex flex-col items-center mb-4">
-                    {/* <Brain className="w-80 h-80 absolute top-[10%] left-1/2 -translate-x-1/2 text-black dark:text-white opacity-2" /> */}
-                    <h1 className="text-2xl font-bold text-center text-black dark:text-white">Deepen.</h1>
-                </div>
-                <div className={`p-1 ${middlePanelCollapsed ? "w-full md:w-[80%] lg:w-[60%]" : "w-full md:w-[80%] lg:w-[70%]"} grid place-items-center rounded-3xl relative
-                `}>
+        <div className="h-full w-full bg-[#f5f2f2] dark:bg-[#0c0c0c] flex flex-col items-center justify-center relative overflow-hidden">
+            
+            {/* Ambient Background Glow */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                 <div className="absolute top-[20%] left-[20%] w-[600px] h-[600px] bg-blue-50/40 dark:bg-blue-900/5 rounded-full blur-[120px]" />
+                 <div className="absolute bottom-[20%] right-[20%] w-[500px] h-[500px] bg-purple-50/40 dark:bg-violet-900/5 rounded-full blur-[100px]" />
+            </div>
 
-                    <div className="border-1 bg-[#f6f3f3] dark:bg-[#141414] relative z-100 grid gap-0 border-gray-300 dark:border-[#1b1b1c] rounded-3xl overflow-hidden focus:border-blue-500 w-full">
+            <div className={`z-10 w-full max-w-2xl px-6 flex flex-col items-center gap-8 transition-all duration-500 ${middlePanelCollapsed ? "scale-105" : "scale-100"}`}>
+                
+                {/* Header / Greeting */}
+                <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="flex flex-col items-center gap-5 mb-2"
+                >
+                     <div className="h-14 w-14 bg-white dark:bg-zinc-900 rounded-2xl flex items-center justify-center shadow-lg shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-zinc-800">
+                        <Brain className="text-gray-900 dark:text-white w-7 h-7" strokeWidth={1.5} />
+                     </div>
+                     <h1 className="text-3xl font-medium text-gray-900 dark:text-white tracking-tight">
+                        How can I help you deepen your knowledge?
+                     </h1>
+                </motion.div>
+
+                {/* Main Input Card */}
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className={`w-full bg-white dark:bg-[#151516] rounded-3xl border transition-all duration-300 shadow-xl shadow-gray-200/40 dark:shadow-black/20 overflow-hidden group
+                        ${isFocused 
+                            ? "border-blue-500/30 ring-4 ring-blue-500/5 dark:ring-blue-500/10" 
+                            : "border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700"
+                        }`}
+                >
+                    <div className="px-1 pt-1">
                         <ContextSummaryBar />
+                    </div>
 
-                        <div className="border-0  rounded-t-3xl p-4 outline-none focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent">
-                            <textarea
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' && !e.shiftKey) {
-                                        e.preventDefault();
-                                        handleSendMessage();
-                                    }
-                                }}
-                                rows={6}
-                                className="w-full h-full resize-none focus:outline-none text-black dark:text-white"
-                                placeholder="Start a new conversation..." />
-                        </div>
-                        <div className="grid grid-cols-[1fr_auto] px-2">
-                            <div className="flex items-center gap-2 w-full">
-                                <div
-                                    onMouseEnter={(e) =>
-                                        showHoverCoach("captures", e.currentTarget)
-                                    }
-                                    onMouseLeave={hideHoverCoach}
-                                    onClick={() => openContextSelector("captures")}
-                                    className="text-lg   dark:bg-[#1e1d1d] bg-[#e7e3e3] p-2 rounded-full cursor-pointer hover:opacity-100 grid place-items-center  font-medium text-black dark:text-white"><Plus /></div>
-                                <div
-                                    onMouseEnter={(e) =>
-                                        showHoverCoach("brain", e.currentTarget)
-                                    }
-                                    onMouseLeave={hideHoverCoach}
+                    <div className="px-5 pt-3 pb-2">
+                        <textarea
+                            ref={textareaRef}
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            onFocus={() => setIsFocused(true)}
+                            onBlur={() => setIsFocused(false)}
+                            rows={1}
+                            className="w-full bg-transparent border-none focus:ring-0 resize-none text-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 leading-relaxed max-h-[200px] overflow-y-auto outline-0"
+                            placeholder="Ask anything..." 
+                        />
+                    </div>
+
+                    {/* Toolbar */}
+                    <div className="px-3 py-3 mt-2 flex items-center justify-between">
+                        
+                        {/* Left Actions (Context) */}
+                        <div className="flex items-center gap-1.5">
+                             {/* Attach Button */}
+                             <button 
+                                onClick={() => openContextSelector("captures")}
+                                onMouseEnter={(e) => showHoverCoach("captures", e.currentTarget)}
+                                onMouseLeave={hideHoverCoach}
+                                className="p-2 rounded-xl cursor-pointer text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
+                                title="Add Context"
+                             >
+                                <Plus size={20} strokeWidth={2} />
+                             </button>
+                             
+                             <div className="h-4 w-px bg-gray-200 dark:bg-zinc-800 mx-1" />
+                             
+                             {/* Context Toggles */}
+                             <div className="flex items-center gap-1 bg-gray-50 dark:bg-zinc-900/50 p-1 rounded-xl border border-transparent dark:border-zinc-800/50">
+                                <button
                                     onClick={toggleBrain}
-                                    className={`flex cursor-pointer hover:opacity-100 text-sm font-medium text-black dark:text-white items-center gap-1 opacity-50 dark:bg-[#1e1d1d] bg-[#e7e3e3] p-2 rounded-full ${isBrainActive() ? "opacity-100" : "opacity-50"}`}>
-                                    <Brain className={isBrainActive() ? "text-blue-500" : ""} />
-                                </div>
-
-                                <div
-                                    onMouseEnter={(e) =>
-                                        showHoverCoach("collections", e.currentTarget)
-                                    }
+                                    onMouseEnter={(e) => showHoverCoach("brain", e.currentTarget)}
                                     onMouseLeave={hideHoverCoach}
+                                    className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer ${
+                                        isBrainActive()
+                                            ? "bg-white dark:bg-zinc-800 text-blue-600 dark:text-blue-400 shadow-sm"
+                                            : "text-gray-500 dark:text-gray-400 hover:bg-gray-200/50 dark:hover:bg-zinc-800/50"
+                                    }`}
+                                >
+                                    <Brain size={14} />
+                                    <span>Brain</span>
+                                </button>
+
+                                <button
                                     onClick={() => openContextSelector("collections")}
-                                    className="flex items-center gap-1 opacity-50 cursor-pointer hover:opacity-100 text-sm font-medium text-black dark:text-white dark:bg-[#1e1d1d] bg-[#e7e3e3] px-4 py-2 rounded-full">
-                                    <FolderPlus size={16} />
-                                    Collections
-                                </div>
-                                <div
-                                    onMouseEnter={(e) =>
-                                        showHoverCoach("bookmarks", e.currentTarget)
-                                    }
+                                    onMouseEnter={(e) => showHoverCoach("collections", e.currentTarget)}
                                     onMouseLeave={hideHoverCoach}
+                                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-200/50 dark:hover:bg-zinc-800/50 hover:text-gray-900 dark:hover:text-gray-200 transition-all cursor-pointer"
+                                >
+                                    <FolderPlus size={14} />
+                                    <span>Collections</span>
+                                </button>
+
+                                <button
                                     onClick={toggleBookmark}
-                                    className={`flex items-center gap-1  cursor-pointer hover:opacity-100 text-sm font-medium px-4 py-2 rounded-full
-                                     ${isBookmarkActive() ? "text-blue-500 dark:bg-[#9575ff]/10 bg-[#e7e3e3]" : "dark:bg-[#1e1d1d] bg-[#e7e3e3] text-black dark:text-white opacity-50"}`}>
-                                    <Bookmark size={16} />
-                                    Bookmarks
-                                </div>
+                                    onMouseEnter={(e) => showHoverCoach("bookmarks", e.currentTarget)}
+                                    onMouseLeave={hideHoverCoach}
+                                    className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer ${
+                                        isBookmarkActive()
+                                            ? "bg-white dark:bg-zinc-800 text-blue-600 dark:text-blue-400 shadow-sm"
+                                            : "text-gray-500 dark:text-gray-400 hover:bg-gray-200/50 dark:hover:bg-zinc-800/50"
+                                    }`}
+                                >
+                                    <Bookmark size={14} />
+                                    <span>Bookmarks</span>
+                                </button>
+                             </div>
+                        </div>
 
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <div
-                                    onClick={() => openContextSelector("models")}
-                                    className={`flex items-center gap-2  cursor-pointer hover:opacity-100 text-sm font-medium px-2 py-2 rounded-full
-                                    dark:bg-[#1e1d1d] bg-[#e7e3e3] text-black dark:text-white opacity-50`}>
-                                    {isAutoMode ? (
-                                        <Zap size={16} className="text-yellow-500" />
-                                    ) : (
-                                        <Bot size={16} />
-                                    )}
-                                    <span className="text-sm">
-                                        {getModelDisplayName()}
-                                    </span>
-                                </div>
-                                <div className="flex items-center p-1 group justify-center w-12 h-12 rounded-full overflow-hidden border-1 border-gray-300 dark:border-gray-800">
+                        {/* Right Actions (Model & Send) */}
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={() => openContextSelector("models")}
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-transparent text-gray-500 dark:text-zinc-400 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                            >
+                                <span>{getModelDisplayName()}</span>
+                                {isAutoMode ? <Zap size={14} className="text-amber-500" /> : <Bot size={14} className="text-blue-500" />}
+                            </button>
 
-                                    <div
-                                        onClick={handleSendMessage}
-                                        className="bg-gradient-to-r hover:transform hover:rotate-30 transition-all duration-300 from-red-500 to-purple-500 text-white w-full h-full rounded-full cursor-pointer grid place-items-center p-1">
-                                        <Send />
-                                    </div>
-                                </div>
-                            </div>
+                            <button
+                                onClick={handleSendMessage}
+                                disabled={!message.trim()}
+                                className={`p-2.5 rounded-xl transition-all duration-300 ${
+                                    message.trim() 
+                                    ? "bg-gray-900 dark:bg-white text-white dark:text-black shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 cursor-pointer" 
+                                    : "bg-gray-100 dark:bg-zinc-800 text-gray-300 dark:text-zinc-600 cursor-not-allowed"
+                                }`}
+                            >
+                                <ArrowUp size={18} strokeWidth={2.5} />
+                            </button>
                         </div>
                     </div>
-                </div>
+                </motion.div>
+                
+                {/* Footer hints */}
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="flex flex-wrap justify-center gap-4 text-xs text-gray-400 dark:text-zinc-600 font-medium"
+                >
+                    <div className="flex items-center gap-1.5">
+                        <span className="px-1.5 py-0.5 rounded border border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900 text-[10px]"><Command size={10}/></span>
+                        <span>+</span>
+                        <span className="px-1.5 py-0.5 rounded border border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900 text-[10px]">Enter</span>
+                        <span className="opacity-70 ml-1">to send</span>
+                    </div>
+                </motion.div>
             </div>
         </div>
-    );
-};
+    )
+}

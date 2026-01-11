@@ -1,39 +1,41 @@
-import clsx from "clsx"
 import { motion } from "framer-motion";
 
-const shimmer ="bg-gradient-to-r from-[#bab6b6] dark:from-[#211f1f] via-gray-300 dark:via-gray-700 to-gray-400 dark:to-gray-800 bg-[length:400%_100%] animate-pulse";
-
-export const ConversationItemSkeleton: React.FC = () => {
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2 }}
-            className="group flex items-center justify-between px-3 py-2.5 rounded-lg"
-        >
-            <div className="flex-1 min-w-0 pr-3">
-                {/* Only title skeleton - no description/subtitle */}
-                <div className={clsx("h-4 rounded w-4/4", shimmer)} />
-            </div>
-            <div className={clsx("w-4 h-4 rounded opacity-0", shimmer)} />
-        </motion.div>
-    );
-};
-
 export const ConversationListSkeleton = () => {
-    return (
-        <div className="h-full flex flex-col overflow-hidden relative bg-[#faf7f7] dark:bg-[#141416]">
-            <div className="flex justify-end items-center px-2 py-2">
-                <div className="z-1000 opacity-50 flex items-center justify-center gap-4 rounded-full cursor-pointer hover:bg-transparent text-2xl  dark:text-gray-200 text-[#333]  top-1  right-0">
-                    <div className={clsx("h-4 w-4 rounded", shimmer)} />
-                    <div className={clsx("h-4 w-4 rounded", shimmer)} />
-                </div>
-            </div>
-            <div className="flex-1 overflow-y-auto px-2 space-y-0.5">
-                {Array.from({ length: 12 }).map((_, index) => (
-                    <ConversationItemSkeleton key={index} />
-                ))}
-            </div>
-        </div>
-    );
+  // Deterministic widths to simulate natural conversation titles
+  const widths = ["w-3/4", "w-1/2", "w-[85%]", "w-2/3", "w-[60%]", "w-4/5", "w-1/2", "w-3/4", "w-[70%]", "w-2/3"];
+
+  return (
+    <div className="h-full flex flex-col bg-[#faf7f7] dark:bg-[#141416] relative overflow-hidden">
+      {/* Header Actions - Minimalist ghostly icons */}
+      <div className="flex justify-end items-center px-4 py-3 gap-4">
+        <div className="w-4 h-4 rounded bg-gray-200 dark:bg-zinc-800/50" />
+        <div className="w-4 h-4 rounded bg-gray-200 dark:bg-zinc-800/50" />
+      </div>
+
+      {/* List Content */}
+      <div className="flex-1 px-2 space-y-1 pt-1">
+        {widths.map((width, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: i * 0.05 }}
+            className="flex items-center h-8 px-3 rounded-lg"
+          >
+            {/* Organic Pulse Effect */}
+            <motion.div
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: i * 0.15, // Wave effect
+              }}
+              className={`h-5 rounded-full bg-gray-200 dark:bg-zinc-800 ${width}`}
+            />
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
 };
