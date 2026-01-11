@@ -30,20 +30,20 @@ export const ContextSelectorOverlay = () => {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-900 px-4 py-2 bg-white dark:bg-[#141416]">
-          <h2 className="text-sm font-semibold text-black dark:text-white capitalize">
+        <div className="flex items-center justify-between border-b border-gray-100 dark:border-zinc-800 px-5 py-4 bg-white dark:bg-zinc-900">
+          <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 capitalize">
             {getTitle()}
           </h2>
           <button
             onClick={closeContextSelector}
-            className="rounded-md p-1 cursor-pointer hover:bg-black/10 dark:hover:bg-white/10"
+            className="rounded-full p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
           >
             <X size={18} />
           </button>
         </div>
 
         {/* Content */}
-        <div className="max-h-[60vh] overflow-y-auto bg-gray-100 dark:bg-[#141416]">
+        <div className="max-h-[60vh] overflow-y-auto bg-white dark:bg-zinc-900 scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-zinc-800">
           {contextSelectorMode === "collections" && <CollectionsPicker />}
           {contextSelectorMode === "models" && <ModelsPicker onSelect={closeContextSelector} />}
           {contextSelectorMode === "models-default" && <ModelsPicker mode="default" onSelect={closeContextSelector} />}
