@@ -27,14 +27,14 @@ export const MessageBubble = ({ role, content, sources }: MessageBubbleProps) =>
         {/* Avatar Section */}
         <div className="flex-shrink-0 flex flex-col items-center">
           {!isUser && <div
-            className={`w-8 h-8 rounded-full grid place-items-center border
+            className={`w-8 h-8 rounded-full grid place-items-center
              
-               "bg-white dark:bg-[#1e1e1e] border-violet-100 dark:border-violet-900/30"
+               "bg-white dark:bg-[#1e1e1e]"
             `}
           >
             {!isUser && (
 
-              <Brain className="w-5 h-5 text-violet-500 animate-pulse-slow" />
+              <Brain className="w-5 h-5 text-gray-600 dark:text-gray-400 animate-pulse-slow" />
             )}
           </div>}
         </div>

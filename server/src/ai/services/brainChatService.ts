@@ -19,6 +19,12 @@ import { UserService } from "../../api/services/user.service";
 export { BrainChatContext, BrainChatMessage, MessageSource };
 
 /**
+ * Maximum number of messages to include in conversation history
+ * This prevents token overflow and reduces costs while maintaining context
+ */
+const MAX_CONVERSATION_HISTORY = 10;
+
+/**
  * Result from building conversation context - includes both prompt and sources
  */
 export interface ContextBuildResult {
@@ -437,13 +443,20 @@ Now answer the user's question based on the context above.`;
     }
 
     // Build messages with fresh system prompt
+    // Use sliding window to limit conversation history and prevent token overflow
+    const recentMessages = conversation.messages.slice(-MAX_CONVERSATION_HISTORY);
+    
+    if (conversation.messages.length > MAX_CONVERSATION_HISTORY) {
+      logger.info(`[SendMessage] Using sliding window: ${recentMessages.length}/${conversation.messages.length} messages`);
+    }
+    
     const messages: Message[] = [
       {
         role: "system",
         content: systemPrompt,
       },
-      // Include conversation history for context continuity
-      ...conversation.messages.map(m => ({
+      // Include recent conversation history for context continuity
+      ...recentMessages.map(m => ({
         role: m.role,
         content: m.content,
       })),
@@ -492,23 +505,43 @@ Now answer the user's question based on the context above.`;
    * Uses a fast/cheap model since this is just for title generation
    */
   static async generateConversationTitle(messages: BrainChatMessage[]): Promise<string> {
-    const res = await openRouter.chat.send({
-      model: "openrouter/auto", // Use auto for fast title generation
-      messages: [
-        {
-          role: "system",
-          content: "You are a helpful assistant that can generate a title for a brain chat conversation based on the conversation history. The title should be a single sentence that captures the essence of the conversation. The title should be no more than 10 words.",
-        },
-        ...messages.map(m => ({
-          role: m.role,
-          content: m.content,
-        })),
-      ],
-      stream: false, // Non-streaming for title generation
-    });
+    const MAX_TITLE_LENGTH = 200;
+    
+    try {
+      const res = await openRouter.chat.send({
+        model: "openrouter/auto", // Use auto for fast title generation
+        messages: [
+          {
+            role: "system",
+            content: "Generate a short, concise title (max 10 words) for this conversation. Return ONLY the title text, nothing else.",
+          },
+          ...messages.map(m => ({
+            role: m.role,
+            content: m.content,
+          })),
+        ],
+        stream: false, // Non-streaming for title generation
+      });
 
-    const content = res.choices[0]?.message?.content;
-    return typeof content === 'string' ? content : "New Conversation";
+      const content = res.choices[0]?.message?.content;
+      
+      if (typeof content === 'string' && content.trim()) {
+        // Truncate to ensure it fits within the schema limit
+        const trimmed = content.trim();
+        if (trimmed.length <= MAX_TITLE_LENGTH) {
+          return trimmed;
+        }
+        // Truncate at word boundary if possible
+        const truncated = trimmed.slice(0, MAX_TITLE_LENGTH - 3);
+        const lastSpace = truncated.lastIndexOf(' ');
+        return (lastSpace > 50 ? truncated.slice(0, lastSpace) : truncated) + '...';
+      }
+      
+      return "New Conversation";
+    } catch (error) {
+      logger.error('Failed to generate conversation title', { error });
+      return "New Conversation";
+    }
   }
 
   /**
